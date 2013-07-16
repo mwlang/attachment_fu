@@ -462,7 +462,7 @@ module Technoweenie # :nodoc:
         # Initializes a new thumbnail with the given suffix.
         def find_or_initialize_thumbnail(file_name_suffix)
           respond_to?(:parent_id) ?
-            thumbnail_class.find_or_initialize_by(:thumbnail => file_name_suffix.to_s, :parent_id => id) :
+            thumbnail_class.find_or_initialize_by({:thumbnail => file_name_suffix.to_s, :parent_id => id}) :
             thumbnail_class.find_or_initialize_by(:thumbnail => file_name_suffix.to_s)
         end
 
