@@ -315,7 +315,7 @@ module Technoweenie # :nodoc:
             :content_type             => content_type,
             :filename                 => thumbnail_name_for(file_name_suffix),
             :thumbnail_resize_options => size
-          }, :without_protection => true)
+          })
           callback_with_args :before_thumbnail_saved, thumb
           thumb.save!
         end
