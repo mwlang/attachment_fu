@@ -83,12 +83,19 @@ module Technoweenie # :nodoc:
         end
 
         protected
+          # protect against attempting to delete a record saved with no file name
+          def valid_filename?
+            !!partitioned_path(thumbnail_name_for(nil)).last
+          end
+        
           # Destroys the file.  Called in the after_destroy callback
           def destroy_file
             begin
-              FileUtils.rm full_filename
-              # remove directory also if it is now empty
-              Dir.rmdir(File.dirname(full_filename)) if (Dir.entries(File.dirname(full_filename))-['.','..']).empty?
+              if valid_filename?
+                FileUtils.rm full_filename
+                # remove directory also if it is now empty
+                Dir.rmdir(File.dirname(full_filename)) if (Dir.entries(File.dirname(full_filename))-['.','..']).empty?
+              end
             rescue
               logger.info "Exception destroying  #{full_filename.inspect}: [#{$!.class.name}] #{$1.to_s}"
               logger.warn $!.backtrace.collect { |b| " > #{b}" }.join("\n")
